@@ -1,48 +1,411 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Portfolio - MAHAMMAD SHAMMI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahammad Shammi - Cloud Engineer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        /* GLOBAL STYLES & RESET */
+        :root {
+            /* Black and Purple Dark Theme */
+            --color-dark-bg: #100C1F; /* Very Dark Purple/Black */
+            --color-card-bg: #1B1829; /* Slightly lighter card background */
+            --primary-color: #E217B1; /* Neon Pink/Violet (for main highlights) */
+            --accent-color: #4CAF50; /* Tech Green (for secondary accents/hover effects) */
+            
+            --text-color: #FFFFFF; 
+            --secondary-text-color: #B0B0B0; 
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* Stronger shadow for dark mode */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; 
+            line-height: 1.6;
+            color: var(--text-color);
+            background-attachment: fixed; 
+            
+            /* Background Animation Setup */
+            background-color: var(--color-dark-bg); 
+            animation: colorShift 20s ease-in-out infinite alternate; /* Slower and more subtle shift */
+        }
+
+        /* KEYFRAME ANIMATION FOR BACKGROUND COLOR */
+        @keyframes colorShift {
+            0%   { background-color: var(--color-dark-bg); }
+            33%  { background-color: #1a1532; } /* Dark Blue-Violet */
+            66%  { background-color: #120A17; } /* Darker Purple */
+            100% { background-color: var(--color-dark-bg); }
+        }
+
+        /* INTRO TEXT ANIMATION */
+        @keyframes introFade {
+            0% { opacity: 0; transform: scale(0.8); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; display: none; }
+        }
+
+        /* TYPEWRITER ANIMATION (For the main tagline) */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+
+        /* CONTENT LOAD ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* INTRO OVERLAY (The 'Superb' part) */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-dark-bg);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: introFade 5s ease-in-out forwards;
+            pointer-events: none; /* Allows clicks to pass through after fade out */
+        }
+        #intro-overlay h2 {
+            font-size: 4em;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px var(--primary-color);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            background: var(--color-card-bg);
+            border-bottom: 5px solid var(--accent-color); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px 0;
+            text-align: center;
+            animation: fadeIn 1s ease-out 5s forwards; /* Starts after introFade */
+            opacity: 0;
+            position: sticky; 
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        /* Typewriter text styling */
+        .tagline {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2em;
+            font-weight: 400;
+            color: var(--accent-color);
+            margin: 10px auto 20px;
+            width: 32ch; /* Needs to be set to the number of characters in the tagline */
+            overflow: hidden; 
+            white-space: nowrap; 
+            border-right: .15em solid var(--primary-color); /* The blinking caret */
+            animation: 
+                typing 3.5s steps(32, end) 5.2s forwards, /* Starts after intro fade */
+                blink-caret .75s step-end infinite 8.7s; /* Starts after typing finishes */
+            opacity: 0; /* Hidden initially */
+            display: inline-block;
+            max-width: 90%;
+        }
+        
+        /* Show tagline when animation starts */
+        @keyframes typing {
+            from { width: 0; opacity: 1; }
+            to { width: 32ch; opacity: 1; }
+        }
+
+        /* NAVIGATION */
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+        }
+        nav a:hover {
+            color: var(--color-dark-bg); 
+            background-color: var(--accent-color); 
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTENT SECTIONS */
+        main {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            animation: fadeIn 1.2s ease-out 5.5s forwards; /* Starts after header fade-in */
+            opacity: 0;
+        }
+
+        /* Staggered animation delay for sections */
+        #about { animation-delay: 5.8s; }
+        #skills { animation-delay: 6.1s; }
+        #projects { animation-delay: 6.4s; }
+        #education { animation-delay: 6.7s; }
+
+        .card {
+            background: var(--color-card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-left: 6px solid var(--primary-color); 
+        }
+
+        .card h2 {
+            color: var(--accent-color); 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+        }
+
+        /* SKILLS SECTION STYLES */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            padding: 25px;
+            background: #252236; 
+            border: 1px solid #3A3A3A;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideInLeft 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Staggered animation for skill boxes */
+        .skills-grid > div:nth-child(1) { animation-delay: 6.8s; }
+        .skills-grid > div:nth-child(2) { animation-delay: 7.0s; }
+        .skills-grid > div:nth-child(3) { animation-delay: 7.2s; }
+
+        .skill-category:hover {
+            transform: scale(1.03); 
+            box-shadow: 0 8px 20px rgba(226, 23, 177, 0.5); /* Shadow using Primary color */
+            background: #2F2C41; 
+        }
+
+        .skill-category h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.4em;
+            border-bottom: 1px dashed var(--secondary-text-color);
+            padding-bottom: 5px;
+        }
+
+        .skill-category ul {
+            list-style: none; 
+            padding-left: 0;
+        }
+
+        .skill-category li::before {
+            content: "➤"; 
+            color: var(--accent-color); 
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .skill-category li {
+            margin-bottom: 10px;
+            padding-left: 0;
+        }
+        
+        /* PROJECTS & INTERNSHIP STYLES */
+        .project-item {
+            margin-top: 15px;
+            padding: 15px;
+            border-left: 3px solid var(--accent-color);
+            margin-bottom: 25px;
+        }
+
+        .project-item ul {
+            margin-left: 20px;
+            list-style-type: disc;
+            color: var(--primary-color); 
+        }
+        .project-item ul li {
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #444;
+            margin: 30px 0;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--color-card-bg); 
+            color: var(--text-color);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px auto;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div id="intro-overlay">
+        <h2>Superb. Let's build something wonderful.</h2>
+    </div>
 
-    <h1>MAHAMMAD SHAMMI</h1>
+    <header>
+        <div class="container">
+            <h1>Mahammad Shammi</h1>
+            <p class="tagline">Cloud-Focused BCA Graduate | AWS & DevOps Enthusiast</p>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#education">Education</a>
+                <a href="mailto:sshammi079@gmail.com">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-    <h2>About Me</h2>
-    <p>
-        I am self motivated, and I am always open for learning things surrounding me and also I am quite a quick learner too.
-        I understand the management and its pivotal role in organizational success. I am equipped with the knowledge to contribute
-        effectively to the workplace environment. My goal is to utilize my knowledge and improve my technical skills in the BCA field
-        and create innovative techniques or ways to do work.
-    </p>
+    <main class="container">
+        <section id="about" class="card">
+            <h2>☁️ Career Objective</h2>
+            <p>Motivated and detail-oriented BCA graduate with a strong foundation in cloud computing, networking, and DevOps tools. Seeking a **Cloud Engineer position** to apply technical skills in managing and optimizing scalable cloud environments using AWS automation tools.</p>
+            <div class="contact-info">
+                <p>📧 Email: sshammi079@gmail.com</p>
+                <p>🔗 <a href="www.linkedin.com/in/mahammad-shammi-b46096350" target="_blank">LinkedIn Profile</a></p>
+                <p>📞 Phone: +91 7411129939</p>
+            </div>
+        </section>
 
-    <h2>Educational Background</h2>
-    <p>
-        I have completed my Bachelor's of Computer Application (2022–2025).
-    </p>
+        <section id="skills" class="card">
+            <h2>💡 Core Skills & Technologies</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Cloud & DevOps</h3>
+                    <ul>
+                        <li>**Cloud Computing (CC)**</li>
+                        <li>**AWS** (Tools/Software)</li>
+                        <li>Networking</li>
+                        <li>Linux (OS)</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Programming & Web</h3>
+                    <ul>
+                        <li>**Python**, JavaScript, C</li>
+                        <li>HTML, CSS, PHP</li>
+                        <li>**MySQL** (Database)</li>
+                        <li>**Web Development**</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Concepts & Tools</h3>
+                    <ul>
+                        <li>Object-Oriented Programming (OOP)</li>
+                        <li>Data Structures</li>
+                        <li>DBMS</li>
+                        <li>VS Code, XAMPP, MS Office</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-    <h2>Skills</h2>
-    <ul>
-        <li>Networking – Networking fundamentals</li>
-        <li>Linux – Linux commands, file system, permissions</li>
-        <li>Amazon Web Services (AWS):</li>
-        <ul>
-            <li>AWS IAM – Users, groups, roles, policies, permissions</li>
-            <li>Amazon VPC – Subnets, Route Tables, Internet Gateway, NAT Gateway, VPC Peering</li>
-            <li>Amazon S3 – Buckets, object storage, access control, public object permissions</li>
-            <li>Amazon SNS & SQS – Notifications, message queues, event-driven workflows</li>
-            <li>AWS Lambda – Serverless functions, triggers, event-based automation</li>
-            <li>Amazon EC2 – Instances, Target Groups, EBS volumes, Auto Scaling</li>
-        </ul>
-        <li>Tools: AWS Console, Linux</li>
-    </ul>
+        <section id="projects" class="card">
+            <h2>🚀 Experience & Projects</h2>
 
-    <h2>Certifications</h2>
-    <p>Cloud Computing with AWS</p>
+            <div class="project-item">
+                <h3>Full Stack Development Internship</h3>
+                <p class="role-company">Prinston Smart Engineers, Bangalore | Feb 2025 - May 2025</p>
+                <ul>
+                    <li>Developed and maintained internal web pages using **HTML, CSS and JavaScript**</li>
+                    <li>Integrated **MySQL** for backend data operations and created reusable components</li>
+                    <li>Used **Git** for version control and collaborated with a team of developers</li>
+                </ul>
+            </div>
 
-    <h2>Declaration</h2>
-    <p>
-        I hereby declare that the information provided in this portfolio is true to the best of my knowledge.
-    </p>
+            <hr>
 
+            <div class="project-item">
+                <h3>Academic Project: Online Maid Service</h3>
+                <p class="role-company">BCA Final Year Project</p>
+                <ul>
+                    <li>Developed an Online Maid Service System to connect customers with professional maids for household tasks.</li>
+                    <li>Designed an interactive web interface for users to book, schedule, and manage maid services conveniently.</li>
+                    <li>**Technologies Used:** HTML, CSS, JavaScript, PHP, MySQL.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="education" class="card">
+            <h2>🎓 Education</h2>
+            <div class="education-item">
+                <h3>Bachelor Of Computer Application (BCA)</h3>
+                <p>Shivaji Arts, Commerce And BCA College, Baad, Karwar</p>
+                <p class="dates">2022 - 2025</p>
+            </div>
+            <div class="education-item">
+                <h3>Pre-University (EBAH)</h3>
+                <p>KLE's Pre-University Colege, Ankola</p>
+                <p class="dates">2020 - 2022</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mahammad Shammi. Built with HTML & CSS.</p>
+        </div>
+    </footer>
 </body>
 </html>
